@@ -1,21 +1,50 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<div class="container-fluid mb-5">
+  <h1 style="color: blueviolet; font-weight: 200">Weather Forecast</h1>
+  <form #userForm="ngForm" (ngSubmit)="OnSubmit()" novalidate>
 
-<router-outlet></router-outlet>
+    <div class="form-group">
+      <label style="color: #4286f4" class="font-weight-bold">Latitude:</label>
+      <input type="text" required #latitude="ngModel" [class.is-invalid]="latitude.invalid && latitude.touched" class="form-control"
+        name="latitude" [(ngModel)]="userLocation.latitude" style="width: 20%">
+      <small class="text-danger" [class.d-none] = "latitude.valid || latitude.untouched">Latitude is required</small>
+    </div>
+    <div class="form-group">
+      <label style="color: #4286f4" class="font-weight-bold">Longitude:</label>
+      <input type="text" required #longitude="ngModel" [class.is-invalid]="longitude.invalid && longitude.touched"
+        class="form-control" name="longitude" [(ngModel)]="userLocation.longitude" style="width: 20%">
+      <small class="text-danger" [class.d-none] = "longitude.valid || longitude.untouched">Longitude is required</small>
+    </div>
+
+    <button [disabled]="userForm.form.invalid" class="btn btn-primary" type="submit">Search</button>
+  </form>
+</div>
+
+
+<table class="table" *ngIf="available" >
+    <thead>
+      <tr>
+        <th scope="col">City</th>
+        <th scope="col">Latitude</th>
+        <th scope="col">Longitude</th>
+        <th scope="col">Date and Time</th>
+        <th scope="col">Time Zone</th>
+        <th scope="col">Weather</th>
+        <th scope="col">Temperature</th>
+        <th scope="col">Cloud</th>
+        <th scope="col">Visibility</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let res of this.response">
+        <td>{{res.data[0].city_name}}</td>
+        <td>{{res.data[0].lat}}</td>
+        <td>{{res.data[0].lon}}</td>
+        <td>{{res.data[0].ob_time}}</td>
+        <td>{{res.data[0].timezone}}</td>
+        <td>{{res.data[0].weather.description}}</td>
+        <td>{{res.data[0].temp}}</td>
+        <td>{{res.data[0].cloud}}</td>
+        <td>{{res.data[0].visibility}}</td>
+      </tr>
+      </tbody>
+  </table>
